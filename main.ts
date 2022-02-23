@@ -17,8 +17,18 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, uzay_gemi, 0, -100)
+    music.pewPew.play()
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    game.over(false)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.setScore(1)
+    dusman.destroy()
+    game.over(true)
 })
 let mermi: Sprite = null
+let dusman: Sprite = null
 let uzay_gemi: Sprite = null
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -161,7 +171,9 @@ uzay_gemi = sprites.create(img`
     . . . . . . . 4 . . 4 . . . . . 
     `, SpriteKind.Player)
 controller.moveSprite(uzay_gemi)
-let dusman = sprites.create(img`
+uzay_gemi.setBounceOnWall(true)
+info.startCountdown(20)
+dusman = sprites.create(img`
     ....ffffff..............
     ....ff2cccf.........cf..
     .....ff2cccfff.....c4f..
@@ -179,10 +191,6 @@ let dusman = sprites.create(img`
     ..........fc2ffffffff...
     ...........c2fff........
     `, SpriteKind.Enemy)
-dusman.setVelocity(50, 50)
-uzay_gemi.setBounceOnWall(true)
 dusman.setBounceOnWall(true)
-info.startCountdown(30)
-game.onUpdate(function () {
-	
-})
+dusman.setVelocity(-16, 50)
+uzay_gemi.setPosition(0, 0)
